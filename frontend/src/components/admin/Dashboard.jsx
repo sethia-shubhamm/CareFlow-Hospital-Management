@@ -1,5 +1,6 @@
 import '../../styles/AdminDashboard.css';
 import axios from 'axios';
+import API_URL from '../../utils/api';
 import { useState, useEffect } from 'react';
 
 const Dashboard = () => {
@@ -23,10 +24,10 @@ const Dashboard = () => {
     try {
       setLoading(true);
       const [statsRes, activitiesRes, appointmentsRes, topDoctorsRes] = await Promise.all([
-        axios.get('http://localhost:3000/api/admin/stats', { withCredentials: true }),
-        axios.get('http://localhost:3000/api/admin/recent-activities', { withCredentials: true }),
-        axios.get('http://localhost:3000/api/admin/today-appointments', { withCredentials: true }),
-        axios.get('http://localhost:3000/api/admin/top-doctors', { withCredentials: true })
+        axios.get(`${API_URL}/api/admin/stats`, { withCredentials: true }),
+        axios.get(`${API_URL}/api/admin/recent-activities`, { withCredentials: true }),
+        axios.get(`${API_URL}/api/admin/today-appointments`, { withCredentials: true }),
+        axios.get(`${API_URL}/api/admin/top-doctors`, { withCredentials: true })
       ]);
 
       setStats(statsRes.data.stats || {});

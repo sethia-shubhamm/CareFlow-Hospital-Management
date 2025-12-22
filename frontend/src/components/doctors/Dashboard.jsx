@@ -1,5 +1,6 @@
 import '../../styles/PatientDashboard.css';
 import axios from 'axios';
+import API_URL from '../../utils/api';
 import { useState, useEffect } from 'react';
 
 const Dashboard = () => {
@@ -21,7 +22,7 @@ const Dashboard = () => {
   const fetchDashboardData = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:3000/api/doctors/dashboard', { withCredentials: true });
+      const response = await axios.get(`${API_URL}/api/doctors/dashboard`, { withCredentials: true });
       
       // Get current date and day
       const today = new Date();

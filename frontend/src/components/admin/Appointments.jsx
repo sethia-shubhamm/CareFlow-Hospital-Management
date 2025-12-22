@@ -1,5 +1,6 @@
 import '../../styles/AdminDashboard.css';
 import axios from 'axios';
+import API_URL from '../../utils/api';
 import { useState, useEffect } from 'react';
 
 const Appointments = ({ searchQuery }) => {
@@ -24,7 +25,7 @@ const Appointments = ({ searchQuery }) => {
   const fetchAppointments = async () => {
     try {
       setLoading(true);
-      const res = await axios.get('http://localhost:3000/api/admin/appointments', { withCredentials: true });
+      const res = await axios.get(`${API_URL}/api/admin/appointments`, { withCredentials: true });
       setAppointments(res.data.appointments || []);
       setLoading(false);
     } catch (error) {
@@ -69,7 +70,7 @@ const Appointments = ({ searchQuery }) => {
 
   const handleGenerateBill = async (appointmentId) => {
     try {
-      await axios.post(`http://localhost:3000/api/admin/bills/generate/${appointmentId}`, 
+      await axios.post(`${API_URL}/api/admin/bills/generate/${appointmentId}`, 
         billData, 
         { withCredentials: true }
       );
@@ -112,7 +113,7 @@ const Appointments = ({ searchQuery }) => {
   const handleCancelAppointment = async (appointmentId) => {
     if (window.confirm('Are you sure you want to cancel this appointment?')) {
       try {
-        await axios.put(`http://localhost:3000/api/admin/appointments/${appointmentId}/cancel`, 
+        await axios.put(`${API_URL}/api/admin/appointments/${appointmentId}/cancel`, 
           {}, 
           { withCredentials: true }
         );

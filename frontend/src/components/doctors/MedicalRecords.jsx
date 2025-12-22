@@ -1,5 +1,6 @@
 import '../../styles/PatientDashboard.css';
 import axios from 'axios';
+import API_URL from '../../utils/api';
 import { useState, useEffect } from 'react';
 
 const MedicalRecords = () => {
@@ -32,8 +33,8 @@ const MedicalRecords = () => {
     try {
       setLoading(true);
       const [recordsRes, patientsRes] = await Promise.all([
-        axios.get('http://localhost:3000/api/doctors/medical-records', { withCredentials: true }),
-        axios.get('http://localhost:3000/api/doctors/patients', { withCredentials: true })
+        axios.get(`${API_URL}/api/doctors/medical-records`, { withCredentials: true }),
+        axios.get(`${API_URL}/api/doctors/patients`, { withCredentials: true })
       ]);
       
       setRecords(recordsRes.data.records || []);
@@ -61,7 +62,7 @@ const MedicalRecords = () => {
 
     try {
       await axios.post(
-        'http://localhost:3000/api/doctors/medical-records',
+        `${API_URL}/api/doctors/medical-records`,
         formData,
         { withCredentials: true }
       );

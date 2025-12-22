@@ -1,5 +1,6 @@
 import '../../styles/PatientDashboard.css';
 import axios from 'axios';
+import API_URL from '../../utils/api';
 import { useState, useEffect, use } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -25,7 +26,7 @@ const Dashboard = () => {
       setLoading(true);
       
       // Fetch dashboard data
-      const dashboardResponse = await axios.get('http://localhost:3000/api/patients/', { withCredentials: true });
+      const dashboardResponse = await axios.get(`${API_URL}/api/patients/`, { withCredentials: true });
       const dashboardData = dashboardResponse.data;
       
       setName(dashboardData.patient.name);
@@ -48,16 +49,16 @@ const Dashboard = () => {
       }
       
       // Fetch all appointments
-      const appointmentsResponse = await axios.get('http://localhost:3000/api/patients/appointments', { withCredentials: true });
+      const appointmentsResponse = await axios.get(`${API_URL}/api/patients/appointments`, { withCredentials: true });
       setAppointments(appointmentsResponse.data.appointments || []);
       
       // Fetch medical records
-      const recordsResponse = await axios.get('http://localhost:3000/api/patients/medicalRecords', { withCredentials: true });
+      const recordsResponse = await axios.get(`${API_URL}/api/patients/medicalRecords`, { withCredentials: true });
       setMedicalRecords(recordsResponse.data.records || []);
       setTotalMedicalRecords(recordsResponse.data.count || 0);
       
       // Fetch bills
-      const billsResponse = await axios.get('http://localhost:3000/api/patients/bills', { withCredentials: true });
+      const billsResponse = await axios.get(`${API_URL}/api/patients/bills`, { withCredentials: true });
       setBills(billsResponse.data.bills || []);
       
       setLoading(false);

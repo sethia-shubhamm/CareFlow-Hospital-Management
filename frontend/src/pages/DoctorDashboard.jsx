@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import API_URL from '../utils/api';
 import '../styles/PatientDashboard.css';
 import DoctorSidebar from '../components/doctors/DoctorSidebar';
 import Dashboard from '../components/doctors/Dashboard';
@@ -15,7 +16,7 @@ const DoctorDashboard = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:3000/api/auth/logout', {}, { withCredentials: true });
+      await axios.post(`${API_URL}/api/auth/logout`, {}, { withCredentials: true });
       localStorage.removeItem('token');
       sessionStorage.removeItem('token');
       navigate('/login');

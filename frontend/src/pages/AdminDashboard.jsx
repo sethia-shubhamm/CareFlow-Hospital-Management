@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import API_URL from '../utils/api';
 import '../styles/AdminDashboard.css';
 import AdminSidebar from '../components/admin/AdminSidebar';
 import Dashboard from '../components/admin/Dashboard';
@@ -16,7 +17,7 @@ const AdminDashboard = () => {
 
   const handleLogout = async () => {
     try {
-      await axios.post('http://localhost:3000/api/auth/logout', {}, { withCredentials: true });
+      await axios.post(`${API_URL}/api/auth/logout`, {}, { withCredentials: true });
       localStorage.removeItem('token');
       sessionStorage.removeItem('token');
       navigate('/login');

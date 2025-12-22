@@ -1,5 +1,6 @@
 import '../../styles/PatientDashboard.css';
 import axios from 'axios';
+import API_URL from '../../utils/api';
 import { useState, useEffect } from 'react';
 
 const Records = () => {
@@ -14,7 +15,7 @@ const Records = () => {
   const fetchMedicalRecords = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:3000/api/patients/medicalRecords', { withCredentials: true });
+      const response = await axios.get(`${API_URL}/api/patients/medicalRecords`, { withCredentials: true });
       setRecords(response.data.records || []);
       setLoading(false);
     } catch (error) {

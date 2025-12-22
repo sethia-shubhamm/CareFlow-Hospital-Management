@@ -1,5 +1,6 @@
 import '../styles/Home.css';
 import axios from 'axios';
+import API_URL from '../utils/api';
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
@@ -18,7 +19,7 @@ const AllDoctors = () => {
   const fetchDoctors = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:3000/api/patients/doctors', { withCredentials: true });
+      const response = await axios.get(`${API_URL}/api/patients/doctors`, { withCredentials: true });
       const doctorsList = response.data.doctors || [];
       setDoctors(doctorsList);
       setFilteredDoctors(doctorsList);

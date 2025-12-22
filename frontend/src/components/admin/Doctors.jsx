@@ -1,5 +1,6 @@
 import '../../styles/AdminDashboard.css';
 import axios from 'axios';
+import API_URL from '../../utils/api';
 import { useState, useEffect } from 'react';
 
 const Doctors = ({ searchQuery }) => {
@@ -30,7 +31,7 @@ const Doctors = ({ searchQuery }) => {
   const fetchDoctors = async () => {
     try {
       setLoading(true);
-      const res = await axios.get('http://localhost:3000/api/admin/doctors', { withCredentials: true });
+      const res = await axios.get(`${API_URL}/api/admin/doctors`, { withCredentials: true });
       setDoctors(res.data.doctors || []);
       setLoading(false);
     } catch (error) {
@@ -61,7 +62,7 @@ const Doctors = ({ searchQuery }) => {
   const handleAddDoctor = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:3000/api/admin/doctors', formData, { withCredentials: true });
+      await axios.post(`${API_URL}/api/admin/doctors`, formData, { withCredentials: true });
       setShowAddModal(false);
       setFormData({
         firstName: '',
@@ -82,7 +83,7 @@ const Doctors = ({ searchQuery }) => {
 
   const handleUpdateStatus = async (doctorId, newStatus) => {
     try {
-      await axios.put(`http://localhost:3000/api/admin/doctors/${doctorId}/status`, 
+      await axios.put(`${API_URL}/api/admin/doctors/${doctorId}/status`, 
         { status: newStatus }, 
         { withCredentials: true }
       );
@@ -96,7 +97,7 @@ const Doctors = ({ searchQuery }) => {
   const handleDeleteDoctor = async (doctorId) => {
     if (window.confirm('Are you sure you want to delete this doctor?')) {
       try {
-        await axios.delete(`http://localhost:3000/api/admin/doctors/${doctorId}`, { withCredentials: true });
+        await axios.delete(`${API_URL}/api/admin/doctors/${doctorId}`, { withCredentials: true });
         fetchDoctors();
         setSelectedDoctor(null);
       } catch (error) {

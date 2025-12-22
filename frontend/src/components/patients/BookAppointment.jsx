@@ -1,5 +1,6 @@
 import '../../styles/PatientDashboard.css';
 import axios from 'axios';
+import API_URL from '../../utils/api';
 import { useState, useEffect } from 'react';
 
 const BookAppointment = () => {
@@ -25,7 +26,7 @@ const BookAppointment = () => {
   const fetchDoctors = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:3000/api/patients/doctors', { withCredentials: true });
+      const response = await axios.get(`${API_URL}/api/patients/doctors`, { withCredentials: true });
       setDoctors(response.data.doctors || []);
       setFilteredDoctors(response.data.doctors || []);
       setLoading(false);
@@ -80,7 +81,7 @@ const BookAppointment = () => {
     try {
       setBookingLoading(true);
       const response = await axios.post(
-        'http://localhost:3000/api/patients/book-appointment',
+        `${API_URL}/api/patients/book-appointment`,
         {
           doctorId: selectedDoctor.id,
           appointmentDate: formData.appointmentDate,

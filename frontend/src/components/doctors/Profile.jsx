@@ -1,5 +1,6 @@
 import '../../styles/PatientDashboard.css';
 import axios from 'axios';
+import API_URL from '../../utils/api';
 import { useState, useEffect } from 'react';
 
 const Profile = () => {
@@ -35,7 +36,7 @@ const Profile = () => {
   const fetchProfile = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:3000/api/doctors/profile', { withCredentials: true });
+      const response = await axios.get(`${API_URL}/api/doctors/profile`, { withCredentials: true });
       setProfile(response.data.doctor);
       
       setFormData({
@@ -93,7 +94,7 @@ const Profile = () => {
 
     try {
       const response = await axios.put(
-        'http://localhost:3000/api/doctors/profile',
+        `${API_URL}/api/doctors/profile`,
         formData,
         { withCredentials: true }
       );
@@ -131,7 +132,7 @@ const Profile = () => {
 
     try {
       await axios.put(
-        'http://localhost:3000/api/doctors/update-password',
+        `${API_URL}/api/doctors/update-password`,
         {
           currentPassword: passwordData.currentPassword,
           newPassword: passwordData.newPassword

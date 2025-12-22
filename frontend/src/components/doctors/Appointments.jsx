@@ -1,5 +1,6 @@
 import '../../styles/PatientDashboard.css';
 import axios from 'axios';
+import API_URL from '../../utils/api';
 import { useState, useEffect } from 'react';
 
 const Appointments = () => {
@@ -21,7 +22,7 @@ const Appointments = () => {
   const fetchAppointments = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:3000/api/doctors/appointments', { withCredentials: true });
+      const response = await axios.get(`${API_URL}/api/doctors/appointments`, { withCredentials: true });
       setAppointments(response.data.appointments || []);
       setLoading(false);
     } catch (error) {
@@ -35,7 +36,7 @@ const Appointments = () => {
 
     try {
       await axios.put(
-        `http://localhost:3000/api/doctors/appointments/${appointmentId}/cancel`,
+        `${API_URL}/api/doctors/appointments/${appointmentId}/cancel`,
         {},
         { withCredentials: true }
       );
@@ -61,7 +62,7 @@ const Appointments = () => {
     e.preventDefault();
     try {
       await axios.put(
-        `http://localhost:3000/api/doctors/appointments/${selectedAppointment._id}/reschedule`,
+        `${API_URL}/api/doctors/appointments/${selectedAppointment._id}/reschedule`,
         rescheduleData,
         { withCredentials: true }
       );

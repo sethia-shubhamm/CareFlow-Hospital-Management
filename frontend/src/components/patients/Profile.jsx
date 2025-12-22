@@ -1,5 +1,6 @@
 import '../../styles/PatientDashboard.css';
 import axios from 'axios';
+import API_URL from '../../utils/api';
 import { useState, useEffect } from 'react';
 
 const Profile = () => {
@@ -41,7 +42,7 @@ const Profile = () => {
   const fetchProfile = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:3000/api/patients/profile', { withCredentials: true });
+      const response = await axios.get(`${API_URL}/api/patients/profile`, { withCredentials: true });
       setProfile(response.data.patient);
       
       // Set initial form data
@@ -115,7 +116,7 @@ const Profile = () => {
 
     try {
       const response = await axios.put(
-        'http://localhost:3000/api/patients/profile',
+        `${API_URL}/api/patients/profile`,
         {
           name: formData.name,
           contactNumber: formData.contactNumber,
@@ -161,7 +162,7 @@ const Profile = () => {
 
     try {
       await axios.put(
-        'http://localhost:3000/api/patients/update-password',
+        `${API_URL}/api/patients/update-password`,
         {
           currentPassword: passwordData.currentPassword,
           newPassword: passwordData.newPassword
@@ -190,7 +191,7 @@ const Profile = () => {
 
     try {
       const response = await axios.put(
-        'http://localhost:3000/api/patients/emergency-contact',
+        `${API_URL}/api/patients/emergency-contact`,
         {
           emergencyName: emergencyContactData.emergencyName,
           emergencyPhone: emergencyContactData.emergencyPhone

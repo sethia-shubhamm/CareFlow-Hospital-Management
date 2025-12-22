@@ -1,5 +1,6 @@
 import '../../styles/PatientDashboard.css';
 import axios from 'axios';
+import API_URL from '../../utils/api';
 import { useState, useEffect } from 'react';
 
 const Billing = () => {
@@ -13,7 +14,7 @@ const Billing = () => {
   const fetchBills = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:3000/api/patients/bills', { withCredentials: true });
+      const response = await axios.get(`${API_URL}/api/patients/bills`, { withCredentials: true });
       setBills(response.data.bills || []);
       setLoading(false);
     } catch (error) {

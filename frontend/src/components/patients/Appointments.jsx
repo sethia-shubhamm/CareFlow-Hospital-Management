@@ -1,5 +1,6 @@
 import '../../styles/PatientDashboard.css';
 import axios from 'axios';
+import API_URL from '../../utils/api';
 import { useState, useEffect } from 'react';
 
 const Appointments = ({ onBookAppointment }) => {
@@ -13,7 +14,7 @@ const Appointments = ({ onBookAppointment }) => {
   const fetchAppointments = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:3000/api/patients/appointments', { withCredentials: true });
+      const response = await axios.get(`${API_URL}/api/patients/appointments`, { withCredentials: true });
       setAppointments(response.data.appointments || []);
       setLoading(false);
     } catch (error) {

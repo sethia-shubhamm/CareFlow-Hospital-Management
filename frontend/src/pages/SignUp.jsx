@@ -3,6 +3,7 @@ import '../styles/SignUp.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import API_URL from '../utils/api';
 
 const SignUp = () => {
   const navigator = useNavigate();
@@ -37,7 +38,7 @@ const SignUp = () => {
       return;
     }
 
-    axios.post('http://localhost:3000/api/auth/signup', formData, {withCredentials:true})
+    axios.post(`${API_URL}/api/auth/signup`, formData, {withCredentials:true})
       .then(response => {
         console.log('Registration successful:', response.data);
         navigator('/login');

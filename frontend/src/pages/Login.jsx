@@ -4,6 +4,7 @@ import {useLocation} from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import API_URL from '../utils/api';
 
 const Login = () => {
 
@@ -43,7 +44,7 @@ const Login = () => {
       email,
       password
     };
-    axios.post('http://localhost:3000/api/auth/login', loginData, { withCredentials: true })
+    axios.post(`${API_URL}/api/auth/login`, loginData, { withCredentials: true })
       .then(response => {
         if (role === 'patient') {
           navigator('/patient');

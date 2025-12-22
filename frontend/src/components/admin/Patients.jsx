@@ -1,5 +1,6 @@
 import '../../styles/AdminDashboard.css';
 import axios from 'axios';
+import API_URL from '../../utils/api';
 import { useState, useEffect } from 'react';
 
 const Patients = ({ searchQuery }) => {
@@ -28,7 +29,7 @@ const Patients = ({ searchQuery }) => {
   const fetchPatients = async () => {
     try {
       setLoading(true);
-      const res = await axios.get('http://localhost:3000/api/admin/patients', { withCredentials: true });
+      const res = await axios.get(`${API_URL}/api/admin/patients`, { withCredentials: true });
       setPatients(res.data.patients || []);
       setLoading(false);
     } catch (error) {
@@ -60,7 +61,7 @@ const Patients = ({ searchQuery }) => {
   const handleAddPatient = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:3000/api/admin/patients', formData, { withCredentials: true });
+      await axios.post(`${API_URL}/api/admin/patients`, formData, { withCredentials: true });
       setShowAddModal(false);
       setFormData({
         firstName: '',
@@ -81,7 +82,7 @@ const Patients = ({ searchQuery }) => {
   const handleDeletePatient = async (patientId) => {
     if (window.confirm('Are you sure you want to delete this patient?')) {
       try {
-        await axios.delete(`http://localhost:3000/api/admin/patients/${patientId}`, { withCredentials: true });
+        await axios.delete(`${API_URL}/api/admin/patients/${patientId}`, { withCredentials: true });
         fetchPatients();
         setSelectedPatient(null);
       } catch (error) {
