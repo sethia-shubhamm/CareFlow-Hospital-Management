@@ -1,0 +1,533 @@
+/* Global styles inherited from index.css */
+
+a {
+    text-decoration: none;
+}
+
+.signup-page {
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(135deg, #7260ff, #3e398f);
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    overflow: hidden;
+}
+
+.signup-page .navbar {
+    width: 100%;
+    height: 80px;
+    background-color: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    padding: 0px 50px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.signup-page .logo {
+    display: flex;
+    align-items: center;
+    margin-right: auto;
+}
+
+.signup-page .logo img {
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+    margin-left: 20px;
+}
+
+.signup-page .logo h6 {
+    color: white;
+    font-size: 18px;
+    margin-left: 15px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-top: 7.5px;
+}
+
+.signup-page .nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    list-style: none;
+}
+
+.signup-page .nav-item {
+    margin: 0 5px;
+}
+
+.signup-page .nav-link {
+    color: white !important;
+    font-weight: 500;
+    padding: 10px 15px !important;
+    opacity: 0.8;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.signup-page .nav-link:hover,
+.signup-page .nav-link.active {
+    opacity: 1;
+}
+
+.signup-page .login {
+    display: flex;
+    margin-right: 20px;
+    gap: 10px;
+}
+
+.signup-page .btn {
+    margin: 5px;
+    padding: 10px 30px;
+    min-width: 120px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    border: none;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    background-color: #5b56e8;
+    color: white;
+}
+
+.signup-page .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    background-color: #4842e0;
+}
+
+.signup-page .mainContainer {
+    width: 90%;
+    min-height: calc(100vh - 120px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    padding: 20px 0;
+}
+
+.signup-page .mainContainer > img {
+    width: 500px;
+    height: 500px;
+    object-fit: contain;
+    animation: signup-float 6s ease-in-out infinite;
+    filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.15));
+    margin-left: 20px;
+}
+
+@keyframes signup-float {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+.signup-page .loginForm {
+    width: 630px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+    border-radius: 20px;
+    background-color: #ffffff;
+    padding: 60px;
+    gap: 15px;
+    box-shadow: -10px 20px 60px rgba(0, 0, 0, 0.1);
+    border-left: 1px solid rgba(255, 255, 255, 0.3);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.signup-page .loginForm h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #3e398f;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
+}
+
+.signup-page .inputFeilds {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    gap: 30px;
+    width: 100%;
+}
+
+.signup-page .left,
+.signup-page .right {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    width: 100%;
+    flex: 1;
+}
+
+.signup-page .left p {
+    font-size: 14px;
+    color: #3e398f;
+}
+
+.signup-page .left p a {
+    color: #5b56e8;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.signup-page .inputFeilds input {
+    width: 100%;
+    height: 50px;
+    border-radius: 15px;
+    background-color: #f8f9fa;
+    border: 1px solid rgba(91, 86, 232, 0.2);
+    padding: 0 20px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.signup-page .inputFeilds input:focus {
+    outline: none;
+    background-color: white;
+    border-color: #5b56e8;
+    box-shadow: 0 5px 20px rgba(91, 86, 232, 0.15);
+}
+
+.signup-page .inputFeilds input::placeholder {
+    color: #8e8ca7;
+}
+
+.signup-page .inputFeilds select {
+    width: 100%;
+    height: 50px;
+    border-radius: 15px;
+    background-color: #f8f9fa;
+    border: 1px solid rgba(91, 86, 232, 0.2);
+    padding: 0 20px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.signup-page .inputFeilds select:focus {
+    outline: none;
+    background-color: white;
+    border-color: #5b56e8;
+    box-shadow: 0 5px 20px rgba(91, 86, 232, 0.15);
+}
+
+.signup-page .gender {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    color: #3e398f;
+}
+
+.signup-page .gender input[type="radio"] {
+    width: auto;
+    height: auto;
+    margin-right: 5px;
+    accent-color: #5b56e8;
+}
+
+.signup-page .right .btn {
+    margin-top: 15px;
+    height: 55px;
+    background: linear-gradient(45deg, #5b56e8, #7260ff);
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.signup-page .right .btn:hover {
+    background: linear-gradient(45deg, #4842e0, #5b56e8);
+}
+
+.signup-page .alert {
+    width: 100%;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.signup-page .alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+@media screen and (max-width: 1200px) {
+    .signup-page .mainContainer > img {
+        width: 450px;
+        height: 450px;
+    }
+
+    .signup-page .loginForm {
+        width: 580px;
+        padding: 40px;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .signup-page .navbar {
+        width: 95%;
+        padding: 0 30px;
+    }
+
+    .signup-page .mainContainer {
+        flex-direction: column;
+        padding: 20px;
+        min-height: auto;
+        gap: 60px;
+    }
+
+    .signup-page .mainContainer > img {
+        width: 350px;
+        height: 350px;
+        margin: 0;
+    }
+
+    .signup-page .loginForm {
+        width: 100%;
+        max-width: 580px;
+        border-radius: 20px;
+        margin-bottom: 30px;
+        padding: 50px 30px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .signup-page .navbar {
+        width: 100%;
+        padding: 0 20px;
+        border-radius: 0;
+    }
+
+    .signup-page .nav {
+        display: none;
+    }
+
+    .signup-page .inputFeilds {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .signup-page .left,
+    .signup-page .right {
+        width: 100%;
+    }
+
+    .signup-page .btn {
+        min-width: 100px;
+        padding: 8px 20px;
+    }
+
+    .signup-page .mainContainer > img {
+        width: 250px;
+        height: 250px;
+    }
+
+    .signup-page .loginForm {
+        padding: 40px 25px;
+    }
+
+    .signup-page .loginForm h1 {
+        font-size: 28px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .signup-page .logo h6 {
+        font-size: 16px;
+    }
+
+    .signup-page .mainContainer > img {
+        width: 200px;
+        height: 200px;
+    }
+
+    .signup-page .login {
+        margin-right: 0;
+    }
+
+    .signup-page .btn {
+        min-width: 80px;
+        padding: 8px 15px;
+        font-size: 12px;
+    }
+}
+
+/* Enhanced Responsive Design */
+@media screen and (max-width: 1200px) {
+    .signup-page .mainContainer {
+        gap: 20px;
+    }
+
+    .signup-page .navbar {
+        padding: 12px 20px;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .signup-page .mainContainer {
+        flex-direction: column;
+        padding: 20px 15px;
+    }
+
+    .signup-page .mainContainer > img {
+        width: 250px;
+        height: 250px;
+    }
+
+    .signup-page .signupForm {
+        width: 100%;
+    }
+
+    .signup-page h1 {
+        font-size: 24px;
+    }
+
+    .signup-page label {
+        font-size: 13px;
+    }
+
+    .signup-page input {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .signup-page .navbar {
+        padding: 10px 15px;
+        gap: 10px;
+    }
+
+    .signup-page .logo h6 {
+        font-size: 13px;
+    }
+
+    .signup-page .nav a {
+        font-size: 12px;
+    }
+
+    .signup-page .mainContainer {
+        gap: 15px;
+        padding: 15px 10px;
+    }
+
+    .signup-page .mainContainer > img {
+        width: 200px;
+        height: 200px;
+    }
+
+    .signup-page .signupForm {
+        padding: 20px;
+    }
+
+    .signup-page h1 {
+        font-size: 20px;
+    }
+
+    .signup-page label {
+        font-size: 12px;
+    }
+
+    .signup-page input {
+        padding: 9px 10px;
+        font-size: 13px;
+    }
+
+    .signup-page .btn {
+        padding: 9px 18px;
+        font-size: 13px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .signup-page .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 8px 10px;
+    }
+
+    .signup-page .logo {
+        gap: 5px;
+    }
+
+    .signup-page .logo img {
+        height: 25px;
+    }
+
+    .signup-page .nav {
+        display: none;
+    }
+
+    .signup-page .mainContainer {
+        padding: 10px 8px;
+    }
+
+    .signup-page .mainContainer > img {
+        display: none;
+    }
+
+    .signup-page .signupForm {
+        width: 100%;
+        padding: 15px;
+    }
+
+    .signup-page h1 {
+        font-size: 18px;
+    }
+
+    .signup-page label {
+        font-size: 11px;
+    }
+
+    .signup-page input {
+        padding: 8px 8px;
+        font-size: 12px;
+    }
+
+    .signup-page .btn {
+        padding: 8px 16px;
+        font-size: 12px;
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .signup-page .signupForm {
+        padding: 12px;
+    }
+
+    .signup-page h1 {
+        font-size: 16px;
+    }
+
+    .signup-page label {
+        font-size: 10px;
+    }
+
+    .signup-page input {
+        padding: 7px 6px;
+        font-size: 11px;
+    }
+
+    .signup-page .btn {
+        padding: 7px 14px;
+        font-size: 11px;
+    }
+}

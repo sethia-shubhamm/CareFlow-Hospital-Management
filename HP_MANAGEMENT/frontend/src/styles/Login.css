@@ -1,0 +1,735 @@
+/* Global styles inherited from index.css */
+
+a {
+    text-decoration: none;
+}
+
+.desktop {
+    width: 100%;
+    height: 100vh;
+    background: linear-gradient(135deg, #7260ff, #3e398f);
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    overflow: hidden;
+}
+
+.desktop .navbar {
+    width: 100%;
+    height: 80px;
+    background-color: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    padding: 0px 50px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+}
+
+.desktop .logo {
+    display: flex;
+    align-items: center;
+    margin-right: auto;
+}
+
+.desktop .logo img {
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+    margin-left: 20px;
+}
+
+.desktop .logo h6 {
+    color: white;
+    font-size: 18px;
+    margin-left: 15px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-top: 7.5px;
+}
+
+.desktop .nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    list-style: none;
+}
+
+.desktop .nav-item {
+    margin: 0 5px;
+}
+
+.desktop .nav-link {
+    color: white !important;
+    font-weight: 500;
+    padding: 10px 15px !important;
+    opacity: 0.8;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.desktop .nav-link:hover,
+.desktop .nav-link.active {
+    opacity: 1;
+}
+
+.desktop .login {
+    display: flex;
+    margin-right: 20px;
+    gap: 10px;
+}
+
+.desktop .btn {
+    margin: 5px;
+    padding: 10px 30px;
+    min-width: 120px;
+    font-size: 14px;
+    font-weight: 500;
+    border-radius: 30px;
+    transition: all 0.3s ease;
+    border: none;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    background-color: #5b56e8;
+    color: white;
+}
+
+.desktop .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    background-color: #4842e0;
+}
+
+.mainContainer {
+    width: 90%;
+    height: calc(100vh - 120px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 50px;
+    padding: 0;
+}
+
+.mainContainer > img {
+    width: 500px;
+    height: 500px;
+    object-fit: contain;
+    animation: float 6s ease-in-out infinite;
+    filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.15));
+    margin-left: 20px;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+.loginForm {
+    width: 450px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: relative;
+    border-radius: 20px;
+    background-color: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    height: 600px;
+    padding: 60px;
+    gap: 15px;
+    box-shadow: -10px 20px 60px rgba(0, 0, 0, 0.1);
+    border-left: 1px solid rgba(255, 255, 255, 0.3);
+    border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.loginForm img {
+    width: 70px;
+    height: 70px;
+    margin-bottom: 20px;
+    animation: none;
+    filter: none;
+    margin: 50px 0 20px 0;
+}
+
+.loginForm h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #3e398f;
+    margin-bottom: 20px;
+    text-shadow: 1px 1px 0px rgba(255, 255, 255, 0.5);
+}
+
+.inputFeilds {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    gap: 50px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.right {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    width: 100%;
+    max-width: 400px;
+}
+
+.right label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #3e398f;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.inputFeilds input {
+    width: 100%;
+    height: 55px;
+    border-radius: 15px;
+    background-color: rgba(255, 255, 255, 0.7);
+    border: 1px solid rgba(91, 86, 232, 0.2);
+    padding: 0 25px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.inputFeilds input:focus {
+    outline: none;
+    background-color: white;
+    border-color: #5b56e8;
+    box-shadow: 0 5px 20px rgba(91, 86, 232, 0.15);
+}
+
+.inputFeilds input::placeholder {
+    color: #8e8ca7;
+}
+
+.right .btn {
+    margin-top: 15px;
+    height: 55px;
+    background: linear-gradient(45deg, #5b56e8, #7260ff);
+    font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 0 30px;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(91, 86, 232, 0.3);
+}
+
+.right .btn:hover {
+    background: linear-gradient(45deg, #4842e0, #5b56e8);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(91, 86, 232, 0.4);
+}
+
+.slider {
+    position: absolute;
+    height: 50px;
+    width: 320px;
+    top: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(45deg, #5b56e8, #7260ff);
+    border-radius: 25px;
+    gap: 5px;
+    padding: 5px;
+    box-shadow: 0 10px 30px rgba(91, 86, 232, 0.3);
+    z-index: 10;
+}
+
+.slider button {
+    flex: 1;
+    height: 40px;
+    border: none;
+    background-color: transparent;
+    color: white;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.slider a {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+
+.slider button.active {
+    background-color: white;
+    color: #5b56e8;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+}
+
+.slider button:hover:not(.active) {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Alert styling */
+.alert {
+    width: 100%;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.alert-warning {
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+}
+
+.gender {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+}
+
+.gender input[type="radio"] {
+    width: auto;
+    height: auto;
+    margin-right: 5px;
+}
+
+@media screen and (max-width: 1200px) {
+    .mainContainer > img {
+        width: 450px;
+        height: 450px;
+    }
+
+    .loginForm {
+        width: 450px;
+        padding: 40px;
+    }
+
+    .slider {
+        width: 300px;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .desktop .navbar {
+        width: 95%;
+        padding: 0 30px;
+    }
+
+    .mainContainer {
+        flex-direction: column;
+        padding: 20px;
+        height: auto;
+        gap: 60px;
+    }
+
+    .mainContainer > img {
+        width: 350px;
+        height: 350px;
+        margin: 0;
+    }
+
+    .loginForm {
+        width: 100%;
+        max-width: 500px;
+        border-radius: 30px;
+        margin-bottom: 30px;
+        height: auto;
+        padding: 50px 30px;
+    }
+
+    .slider {
+        position: relative;
+        top: -75px;
+        margin-bottom: -50px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .desktop .navbar {
+        width: 100%;
+        padding: 0 20px;
+        border-radius: 0;
+    }
+
+    .desktop .nav {
+        display: none;
+    }
+
+    .inputFeilds {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .right {
+        width: 100%;
+    }
+
+    .desktop .btn {
+        min-width: 100px;
+        padding: 8px 20px;
+    }
+
+    .mainContainer > img {
+        width: 250px;
+        height: 250px;
+    }
+
+    .loginForm {
+        padding: 40px 25px;
+    }
+
+    .loginForm h1 {
+        font-size: 28px;
+    }
+
+    .slider {
+        width: 90%;
+        max-width: 280px;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .desktop .logo h6 {
+        font-size: 16px;
+    }
+
+    .slider {
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .mainContainer > img {
+        width: 200px;
+        height: 200px;
+    }
+
+    .desktop .login {
+        margin-right: 0;
+    }
+
+    .desktop .btn {
+        min-width: 80px;
+        padding: 8px 15px;
+        font-size: 12px;
+    }
+}
+
+/* Floating Demo Button */
+.demo-buttons-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 1000;
+}
+
+.demo-btn {
+    padding: 12px 16px;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    font-size: 13px;
+    color: white;
+}
+
+.demo-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.demo-btn.patient {
+    background: #3498db;
+}
+
+.demo-btn.patient:hover {
+    background: #2980b9;
+}
+
+.demo-btn.doctor {
+    background: #2ecc71;
+}
+
+.demo-btn.doctor:hover {
+    background: #27ae60;
+}
+
+.demo-btn.admin {
+    background: #e74c3c;
+}
+
+.demo-btn.admin:hover {
+    background: #c0392b;
+}
+
+.demo-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 480px) {
+    .demo-buttons-container {
+        bottom: 10px;
+        right: 10px;
+    }
+
+    .demo-btn {
+        padding: 10px 12px;
+        font-size: 11px;
+    }
+}
+
+/* Additional Responsive Design */
+@media (max-width: 1200px) {
+    .mainContainer {
+        gap: 20px;
+    }
+
+    .desktop .navbar {
+        padding: 12px 20px;
+    }
+
+    .loginForm {
+        width: 90%;
+        max-width: 450px;
+    }
+}
+
+@media (max-width: 992px) {
+    .mainContainer {
+        flex-direction: column;
+        padding: 20px 15px;
+    }
+
+    .mainContainer img {
+        height: 250px;
+    }
+
+    .loginForm {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .loginForm h1 {
+        font-size: 24px;
+    }
+
+    .inputFeilds input,
+    .inputFeilds select {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+
+    .inputFeilds label {
+        font-size: 13px;
+    }
+
+    .inputFeilds .btn {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 768px) {
+    .desktop .navbar {
+        padding: 10px 15px;
+        gap: 10px;
+    }
+
+    .logo h6 {
+        font-size: 14px;
+    }
+
+    .nav a {
+        font-size: 12px;
+    }
+
+    .mainContainer {
+        gap: 15px;
+        padding: 15px 10px;
+    }
+
+    .mainContainer img {
+        height: 200px;
+    }
+
+    .loginForm {
+        padding: 20px;
+    }
+
+    .loginForm h1 {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+
+    .slider {
+        margin-bottom: 15px;
+        gap: 8px;
+    }
+
+    .slider button {
+        padding: 8px 12px;
+        font-size: 12px;
+    }
+
+    .inputFeilds {
+        gap: 10px;
+    }
+
+    .inputFeilds label {
+        font-size: 12px;
+    }
+
+    .inputFeilds input,
+    .inputFeilds select {
+        padding: 9px 10px;
+        font-size: 13px;
+    }
+
+    .inputFeilds .btn {
+        padding: 9px 18px;
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 576px) {
+    .desktop .navbar {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 8px 10px;
+    }
+
+    .logo {
+        gap: 5px;
+    }
+
+    .logo img {
+        height: 25px;
+    }
+
+    .logo h6 {
+        font-size: 12px;
+    }
+
+    .nav {
+        display: none;
+    }
+
+    .mainContainer {
+        padding: 10px 8px;
+    }
+
+    .mainContainer img {
+        display: none;
+    }
+
+    .loginForm {
+        width: 100%;
+        padding: 15px;
+    }
+
+    .loginForm h1 {
+        font-size: 18px;
+    }
+
+    .slider {
+        margin-bottom: 12px;
+        gap: 6px;
+    }
+
+    .slider button {
+        padding: 7px 10px;
+        font-size: 11px;
+        flex: 1;
+    }
+
+    .inputFeilds {
+        gap: 8px;
+    }
+
+    .inputFeilds label {
+        font-size: 11px;
+    }
+
+    .inputFeilds input,
+    .inputFeilds select {
+        padding: 8px 8px;
+        font-size: 12px;
+    }
+
+    .inputFeilds .btn {
+        padding: 8px 16px;
+        font-size: 12px;
+        width: 100%;
+    }
+
+    .alert {
+        padding: 10px;
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .loginForm {
+        padding: 12px;
+    }
+
+    .loginForm h1 {
+        font-size: 16px;
+    }
+
+    .slider button {
+        font-size: 10px;
+        padding: 6px 8px;
+    }
+
+    .inputFeilds label {
+        font-size: 10px;
+    }
+
+    .inputFeilds input,
+    .inputFeilds select {
+        padding: 7px 6px;
+        font-size: 11px;
+    }
+
+    .inputFeilds .btn {
+        padding: 7px 14px;
+        font-size: 11px;
+    }
+}
