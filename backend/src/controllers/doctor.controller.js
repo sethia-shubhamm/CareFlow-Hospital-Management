@@ -5,6 +5,7 @@ import MedicalRecord from "../models/medicalRecord.model.js";
 import User from "../models/user.model.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import bcrypt from "bcrypt";
+import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
 export const getDoctorDashboard = asyncHandler(async (req, res) => {
     const userId = req.user.id;
@@ -325,7 +326,8 @@ export const getDoctorMedicalRecords = asyncHandler(async (req, res) => {
             treatment: record.treatment,
             prescription: record.prescription,
             notes: record.notes,
-            visitDate: record.visitDate
+            visitDate: record.visitDate,
+            attachments: record.attachments || []
         }))
     });
 });
@@ -351,6 +353,25 @@ export const addMedicalRecord = asyncHandler(async (req, res) => {
         throw new Error("Patient not found");
     }
 
+    // Handle file uploads - Upload all files in parallel for better performance
+    const attachments = [];
+    if (req.files && req.files.length > 0) {
+        const uploadPromises = req.files.map(async (file) => {
+            const uploadResult = await uploadOnCloudinary(file.path);
+            if (uploadResult) {
+                return {
+                    fileName: file.originalname,
+                    fileUrl: uploadResult.secure_url,
+                    fileSize: `${(file.size / 1024).toFixed(2)} KB`
+                };
+            }
+            return null;
+        });
+        
+        const results = await Promise.all(uploadPromises);
+        attachments.push(...results.filter(result => result !== null));
+    }
+
     const medicalRecord = await MedicalRecord.create({
         patient: patientId,
         doctor: doctor._id,
@@ -361,11 +382,41 @@ export const addMedicalRecord = asyncHandler(async (req, res) => {
         prescription: prescription || '',
         notes: notes || '',
         visitDate,
-        description: `${diagnosis || ''} ${treatment || ''}`.trim()
+        description: `${diagnosis || ''} ${treatment || ''}`.trim(),
+        attachments
     });
 
     res.status(201).json({
         message: "Medical record added successfully",
         record: medicalRecord
+    });
+});
+
+export const deleteMedicalRecord = asyncHandler(async (req, res) => {
+    const { recordId } = req.params;
+    const userId = req.user.id;
+
+    const doctor = await Doctor.findOne({ user: userId });
+    if (!doctor) {
+        res.status(404);
+        throw new Error("Doctor not found");
+    }
+
+    const medicalRecord = await MedicalRecord.findById(recordId);
+    if (!medicalRecord) {
+        res.status(404);
+        throw new Error("Medical record not found");
+    }
+
+    // Verify the doctor owns this record
+    if (medicalRecord.doctor.toString() !== doctor._id.toString()) {
+        res.status(403);
+        throw new Error("Not authorized to delete this record");
+    }
+
+    await MedicalRecord.findByIdAndDelete(recordId);
+
+    res.status(200).json({
+        message: "Medical record deleted successfully"
     });
 });

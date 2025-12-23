@@ -23,6 +23,7 @@ const MedicalRecords = () => {
     visitDate: new Date().toISOString().split('T')[0]
   });
 
+  const [selectedFiles, setSelectedFiles] = useState([]);
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
@@ -54,6 +55,15 @@ const MedicalRecords = () => {
     }));
   };
 
+  const handleFileChange = (e) => {
+    const files = Array.from(e.target.files);
+    setSelectedFiles(files);
+  };
+
+  const removeFile = (index) => {
+    setSelectedFiles(prev => prev.filter((_, i) => i !== index));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
@@ -61,10 +71,25 @@ const MedicalRecords = () => {
     setSuccessMessage('');
 
     try {
+      // Create FormData to handle file uploads
+      const submitData = new FormData();
+      
+      // Append all form fields
+      Object.keys(formData).forEach(key => {
+        submitData.append(key, formData[key]);
+      });
+      
+      // Append files
+      selectedFiles.forEach(file => {
+        submitData.append('attachments', file);
+      });
+
       await axios.post(
         `${API_URL}/api/doctors/medical-records`,
-        formData,
-        { withCredentials: true }
+        submitData,
+        { 
+          withCredentials: true
+        }
       );
 
       setSuccessMessage('Medical record added successfully!');
@@ -79,6 +104,7 @@ const MedicalRecords = () => {
         notes: '',
         visitDate: new Date().toISOString().split('T')[0]
       });
+      setSelectedFiles([]);
       fetchData();
       setTimeout(() => setSuccessMessage(''), 3000);
     } catch (error) {
@@ -86,6 +112,26 @@ const MedicalRecords = () => {
       setTimeout(() => setErrorMessage(''), 3000);
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  const handleDelete = async (recordId) => {
+    if (!window.confirm('Are you sure you want to delete this medical record?')) {
+      return;
+    }
+
+    try {
+      await axios.delete(
+        `${API_URL}/api/doctors/medical-records/${recordId}`,
+        { withCredentials: true }
+      );
+      
+      setSuccessMessage('Medical record deleted successfully!');
+      fetchData();
+      setTimeout(() => setSuccessMessage(''), 3000);
+    } catch (error) {
+      setErrorMessage(error.response?.data?.message || 'Error deleting medical record');
+      setTimeout(() => setErrorMessage(''), 3000);
     }
   };
 
@@ -188,6 +234,74 @@ const MedicalRecords = () => {
                   <p>{selectedRecord.notes}</p>
                 </div>
               )}
+
+              {selectedRecord.attachments && selectedRecord.attachments.filter(att => att.fileUrl.includes('/image/upload/')).length > 0 && (
+                <div className="detail-section">
+                  <h3>Attachments</h3>
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))', gap: '12px' }}>
+                    {selectedRecord.attachments.filter(att => att.fileUrl.includes('/image/upload/')).map((attachment, index) => (
+                      <div key={index} style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        padding: '10px',
+                        backgroundColor: '#f8f9fa',
+                        borderRadius: '8px',
+                        border: '1px solid #e9ecef'
+                      }}>
+                        <div style={{ 
+                          width: '100%',
+                          height: '150px',
+                          marginBottom: '10px',
+                          borderRadius: '6px',
+                          overflow: 'hidden',
+                          backgroundColor: '#e9ecef'
+                        }}>
+                          <img 
+                            src={attachment.fileUrl} 
+                            alt={attachment.fileName}
+                            style={{
+                              width: '100%',
+                              height: '100%',
+                              objectFit: 'cover'
+                            }}
+                          />
+                        </div>
+                        <div style={{ marginBottom: '10px' }}>
+                          <p style={{ 
+                            margin: '0 0 4px 0', 
+                            fontWeight: '500', 
+                            fontSize: '13px',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                          }}>{attachment.fileName}</p>
+                          <p style={{ margin: 0, fontSize: '11px', color: '#6c757d' }}>
+                            {attachment.fileSize || 'Unknown size'}
+                          </p>
+                        </div>
+                        <a 
+                          href={attachment.fileUrl} 
+                          download={attachment.fileName}
+                          style={{
+                            padding: '6px 12px',
+                            backgroundColor: '#007bff',
+                            color: 'white',
+                            borderRadius: '4px',
+                            textDecoration: 'none',
+                            fontSize: '13px',
+                            textAlign: 'center',
+                            transition: 'background-color 0.2s'
+                          }}
+                          onMouseOver={(e) => e.target.style.backgroundColor = '#0056b3'}
+                          onMouseOut={(e) => e.target.style.backgroundColor = '#007bff'}
+                        >
+                          Download
+                        </a>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -247,6 +361,13 @@ const MedicalRecords = () => {
                   onClick={() => setSelectedRecord(record)}
                 >
                   View Details
+                </button>
+                <button 
+                  className="btn-danger btn-sm"
+                  onClick={() => handleDelete(record._id)}
+                  style={{ marginLeft: '8px' }}
+                >
+                  Delete
                 </button>
               </div>
             </div>
@@ -368,6 +489,49 @@ const MedicalRecords = () => {
                   rows="3"
                   placeholder="Any additional notes"
                 />
+              </div>
+
+              <div className="form-group">
+                <label>Attachments</label>
+                <input
+                  type="file"
+                  multiple
+                  onChange={handleFileChange}
+                  accept=".jpg,.jpeg,.png,image/jpeg,image/png"
+                  style={{ display: 'block', marginBottom: '10px' }}
+                />
+                {selectedFiles.length > 0 && (
+                  <div className="selected-files-list" style={{ marginTop: '10px' }}>
+                    <p style={{ fontWeight: '600', marginBottom: '8px' }}>Selected Files:</p>
+                    {selectedFiles.map((file, index) => (
+                      <div key={index} style={{ 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'space-between',
+                        padding: '8px 12px',
+                        backgroundColor: '#f5f5f5',
+                        borderRadius: '4px',
+                        marginBottom: '6px'
+                      }}>
+                        <span style={{ fontSize: '14px' }}>📎 {file.name}</span>
+                        <button 
+                          type="button" 
+                          onClick={() => removeFile(index)}
+                          style={{
+                            background: 'transparent',
+                            border: 'none',
+                            color: '#dc3545',
+                            cursor: 'pointer',
+                            fontSize: '18px',
+                            padding: '0 8px'
+                          }}
+                        >
+                          ×
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div className="form-actions">

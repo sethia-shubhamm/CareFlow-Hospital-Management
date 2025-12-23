@@ -4,6 +4,7 @@ import Bill from "../models/bill.model.js";
 import MedicalRecord from "../models/medicalRecord.model.js";
 import Doctor from "../models/doctor.model.js"; // needed for populate
 import User from "../models/user.model.js";
+import ChatHistory from "../models/chatHistory.model.js";
 import asyncHandler from "../utils/asyncHandler.js";
 import bcrypt from "bcrypt";
 
@@ -375,5 +376,104 @@ export const uploadProfileImage = asyncHandler(async (req, res) => {
             emergencyContact: patient.emergencyContact,
             profileImage: imageUrl
         }
+    });
+});
+
+export const downloadAttachment = asyncHandler(async (req, res) => {
+    const { fileUrl } = req.query;
+
+    if (!fileUrl) {
+        res.status(400);
+        throw new Error("File URL is required");
+    }
+
+    try {
+        // Fetch the file from Cloudinary
+        const response = await fetch(fileUrl);
+        
+        if (!response.ok) {
+            res.status(404);
+            throw new Error("File not found");
+        }
+
+        // Get the file buffer
+        const buffer = await response.arrayBuffer();
+        
+        // Extract filename from URL or use default
+        const urlParts = fileUrl.split('/');
+        const filename = urlParts[urlParts.length - 1].split('.')[0];
+        const extension = fileUrl.match(/\.(pdf|jpg|jpeg|png|doc|docx)$/i)?.[1] || 'pdf';
+        
+        // Set appropriate headers
+        res.setHeader('Content-Type', response.headers.get('content-type') || 'application/octet-stream');
+        res.setHeader('Content-Disposition', `attachment; filename="${filename}.${extension}"`);
+        res.setHeader('Content-Length', buffer.byteLength);
+        
+        // Send the file
+        res.send(Buffer.from(buffer));
+    } catch (error) {
+        console.error('Download error:', error);
+        res.status(500);
+        throw new Error("Failed to download file");
+    }
+});
+
+export const saveChatHistory = asyncHandler(async (req, res) => {
+    const userId = req.user.id;
+    const { messages } = req.body;
+
+    const patient = await Patient.findOne({ user: userId });
+    if (!patient) {
+        res.status(404);
+        throw new Error("Patient not found");
+    }
+
+    let chatHistory = await ChatHistory.findOne({ patient: patient._id });
+    
+    if (chatHistory) {
+        chatHistory.messages = messages;
+        await chatHistory.save();
+    } else {
+        chatHistory = await ChatHistory.create({
+            patient: patient._id,
+            messages
+        });
+    }
+
+    res.status(200).json({
+        message: "Chat history saved successfully",
+        chatHistory
+    });
+});
+
+export const getChatHistory = asyncHandler(async (req, res) => {
+    const userId = req.user.id;
+
+    const patient = await Patient.findOne({ user: userId });
+    if (!patient) {
+        res.status(404);
+        throw new Error("Patient not found");
+    }
+
+    const chatHistory = await ChatHistory.findOne({ patient: patient._id });
+
+    res.status(200).json({
+        messages: chatHistory ? chatHistory.messages : []
+    });
+});
+
+export const deleteChatHistory = asyncHandler(async (req, res) => {
+    const userId = req.user.id;
+
+    const patient = await Patient.findOne({ user: userId });
+    if (!patient) {
+        res.status(404);
+        throw new Error("Patient not found");
+    }
+
+    await ChatHistory.deleteOne({ patient: patient._id });
+
+    res.status(200).json({
+        message: "Chat history deleted successfully"
     });
 });

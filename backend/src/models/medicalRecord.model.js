@@ -54,7 +54,8 @@ const medicalRecordSchema = new mongoose.Schema(
     attachments: [
       {
         fileName: String,
-        fileUrl: String
+        fileUrl: String,
+        fileSize: String
       }
     ],
 

@@ -39,6 +39,13 @@ const PatientSidebar = ({ activeTab, setActiveTab, onLogout }) => {
           <img src="/images/patientPage/invoice.png" alt="Billing" />
           <h6>Billing</h6>
         </div>
+        <div
+          className={activeTab === 'ai-buddy' ? 'active' : ''}
+          onClick={() => setActiveTab('ai-buddy')}
+        >
+          <img src="/images/patientPage/profile.png" alt="AI Buddy" />
+          <h6>AI Buddy</h6>
+        </div>
       </div>
 
       <button className="logout" onClick={onLogout}>

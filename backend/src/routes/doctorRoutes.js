@@ -9,9 +9,11 @@ import {
     updateDoctorProfile, 
     updateDoctorPassword,
     getDoctorMedicalRecords,
-    addMedicalRecord
+    addMedicalRecord,
+    deleteMedicalRecord
 } from "../controllers/doctor.controller.js";
 import authMiddleware from "../middleware/auth.middleware.js";
+import upload from "../middleware/upload.middleware.js";
 
 const router = Router();
 
@@ -33,6 +35,7 @@ router.put('/update-password', authMiddleware, updateDoctorPassword);
 
 // Medical Records
 router.get('/medical-records', authMiddleware, getDoctorMedicalRecords);
-router.post('/medical-records', authMiddleware, addMedicalRecord);
+router.post('/medical-records', authMiddleware, upload.array('attachments', 5), addMedicalRecord);
+router.delete('/medical-records/:recordId', authMiddleware, deleteMedicalRecord);
 
 export default router;

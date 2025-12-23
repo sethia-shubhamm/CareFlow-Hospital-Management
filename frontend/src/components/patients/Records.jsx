@@ -101,24 +101,86 @@ const Records = () => {
                 </div>
               </div>
 
-              {selectedRecord.attachments && selectedRecord.attachments.length > 0 && (
+              {selectedRecord.attachments && selectedRecord.attachments.filter(att => att.fileUrl.includes('/image/upload/')).length > 0 && (
                 <div className="record-detail-section">
                   <h3>Attachments</h3>
-                  <div className="attachments-list">
-                    {selectedRecord.attachments.map((attachment, index) => (
-                      <div key={index} className="attachment-item">
-                        <div className="attachment-icon">
-                          📎
+                  <div className="attachments-list" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '15px' }}>
+                    {selectedRecord.attachments.filter(att => att.fileUrl.includes('/image/upload/')).map((attachment, index) => (
+                      <div key={index} className="attachment-item" style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        padding: '12px',
+                        backgroundColor: '#f8f9fa',
+                        borderRadius: '8px',
+                        border: '1px solid #e9ecef'
+                      }}>
+                        <div style={{ 
+                          width: '100%',
+                          height: '200px',
+                          marginBottom: '12px',
+                          borderRadius: '6px',
+                          overflow: 'hidden',
+                          backgroundColor: '#e9ecef'
+                        }}>
+                          <img 
+                            src={attachment.fileUrl} 
+                            alt={attachment.fileName}
+                            style={{
+                              width: '100%',
+                              height: '100%',
+                              objectFit: 'cover'
+                            }}
+                          />
                         </div>
-                        <div className="attachment-info">
-                          <p className="attachment-name">{attachment.fileName}</p>
-                          <a href={attachment.fileUrl} target="_blank" rel="noopener noreferrer" className="attachment-link">
-                            Download File
-                          </a>
+                        <div className="attachment-info" style={{ marginBottom: '12px' }}>
+                          <p className="attachment-name" style={{ 
+                            margin: '0 0 4px 0', 
+                            fontWeight: '500',
+                            fontSize: '14px',
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap'
+                          }}>{attachment.fileName}</p>
+                          {attachment.fileSize && (
+                            <p style={{ 
+                              margin: 0, 
+                              fontSize: '12px', 
+                              color: '#6c757d' 
+                            }}>{attachment.fileSize}</p>
+                          )}
                         </div>
+                        <a
+                          href={attachment.fileUrl}
+                          download={attachment.fileName}
+                          className="attachment-link"
+                          style={{
+                            padding: '8px 16px',
+                            backgroundColor: '#007bff',
+                            color: 'white',
+                            borderRadius: '6px',
+                            border: 'none',
+                            fontSize: '14px',
+                            fontWeight: '500',
+                            textAlign: 'center',
+                            textDecoration: 'none',
+                            cursor: 'pointer',
+                            transition: 'background-color 0.2s'
+                          }}
+                          onMouseOver={(e) => e.target.style.backgroundColor = '#0056b3'}
+                          onMouseOut={(e) => e.target.style.backgroundColor = '#007bff'}
+                        >
+                          Download
+                        </a>
                       </div>
                     ))}
                   </div>
+                </div>
+              )}
+
+              {(!selectedRecord.attachments || selectedRecord.attachments.filter(att => att.fileUrl.includes('/image/upload/')).length === 0) && (
+                <div className="record-detail-section">
+                  <h3>Attachments</h3>
+                  <p style={{ color: '#6c757d', fontStyle: 'italic' }}>No image attachments available for this record</p>
                 </div>
               )}
             </div>

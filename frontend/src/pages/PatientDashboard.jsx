@@ -10,6 +10,7 @@ import BookAppointment from '../components/patients/BookAppointment';
 import Records from '../components/patients/Records';
 import Profile from '../components/patients/Profile';
 import Billing from '../components/patients/Billing';
+import AIBuddy from '../components/patients/AIBuddy';
 
 const PatientDashboard = () => {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -71,6 +72,7 @@ const PatientDashboard = () => {
           {activeTab === 'records' && <Records />}
           {activeTab === 'profile' && <Profile />}
           {activeTab === 'billing' && <Billing />}
+          {activeTab === 'ai-buddy' && <AIBuddy />}
         </div>
       </div>
     </div>

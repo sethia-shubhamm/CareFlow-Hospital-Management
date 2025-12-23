@@ -4,6 +4,7 @@ import patientRoutes from "./src/routes/patientRoutes.js";
 import doctorRoutes from "./src/routes/doctorRoutes.js";
 import adminRoutes from "./src/routes/adminRoutes.js";
 import cookieParser from "cookie-parser";
+import aiRoutes from "./src/routes/aiRoutes.js";
 import cors from "cors";
 import path from "path";
 import { fileURLToPath } from "url";
@@ -43,5 +44,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/patients', patientRoutes);
 app.use('/api/doctors', doctorRoutes);
 app.use('/api/admin', adminRoutes);
+
+app.use("/api/ai", aiRoutes);
 
 export default app;
