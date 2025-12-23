@@ -39,10 +39,14 @@ export const signupUser = asyncHandler (async (req, res) => {
         });
 
         const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+        
+        // Determine if we're in production (Vercel or NODE_ENV=production)
+        const isProduction = process.env.NODE_ENV === "production" || process.env.VERCEL === "1";
+        
         res.cookie("token", token, { 
             httpOnly: true, 
-            secure: process.env.NODE_ENV === "production",
-            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+            secure: isProduction,
+            sameSite: isProduction ? "none" : "lax",
             maxAge: 3600000 // 1 hour
         });
 
@@ -78,10 +82,14 @@ export const loginUser = asyncHandler (async (req, res) => {
 
 
     const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    
+    // Determine if we're in production (Vercel or NODE_ENV=production)
+    const isProduction = process.env.NODE_ENV === "production" || process.env.VERCEL === "1";
+    
     res.cookie("token", token, { 
         httpOnly: true, 
-        secure: process.env.NODE_ENV === "production",
-        sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+        secure: isProduction,
+        sameSite: isProduction ? "none" : "lax",
         maxAge: 3600000 // 1 hour
     });
 
