@@ -2,14 +2,13 @@ import '../../styles/PatientDashboard.css';
 import axios from 'axios';
 import API_URL from '../../utils/api';
 import { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 
 const MedicalRecords = () => {
   const [records, setRecords] = useState([]);
   const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
-  const [successMessage, setSuccessMessage] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
   const [selectedRecord, setSelectedRecord] = useState(null);
 
   const [formData, setFormData] = useState({
@@ -67,8 +66,6 @@ const MedicalRecords = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
-    setErrorMessage('');
-    setSuccessMessage('');
 
     try {
       // Create FormData to handle file uploads
@@ -92,7 +89,7 @@ const MedicalRecords = () => {
         }
       );
 
-      setSuccessMessage('Medical record added successfully!');
+      toast.success('Medical record added successfully!');
       setShowAddModal(false);
       setFormData({
         patientId: '',
@@ -106,33 +103,62 @@ const MedicalRecords = () => {
       });
       setSelectedFiles([]);
       fetchData();
-      setTimeout(() => setSuccessMessage(''), 3000);
     } catch (error) {
-      setErrorMessage(error.response?.data?.message || 'Error adding medical record');
-      setTimeout(() => setErrorMessage(''), 3000);
+      toast.error(error.response?.data?.message || 'Error adding medical record');
     } finally {
       setSubmitting(false);
     }
   };
 
   const handleDelete = async (recordId) => {
-    if (!window.confirm('Are you sure you want to delete this medical record?')) {
-      return;
-    }
-
-    try {
-      await axios.delete(
-        `${API_URL}/api/doctors/medical-records/${recordId}`,
-        { withCredentials: true }
-      );
-      
-      setSuccessMessage('Medical record deleted successfully!');
-      fetchData();
-      setTimeout(() => setSuccessMessage(''), 3000);
-    } catch (error) {
-      setErrorMessage(error.response?.data?.message || 'Error deleting medical record');
-      setTimeout(() => setErrorMessage(''), 3000);
-    }
+    toast((t) => (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <p style={{ margin: 0, fontWeight: '600' }}>Delete this medical record?</p>
+        <p style={{ margin: 0, fontSize: '14px', color: '#666' }}>This action cannot be undone.</p>
+        <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            style={{
+              padding: '6px 16px',
+              background: '#f0f0f0',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontSize: '14px'
+            }}
+          >
+            Cancel
+          </button>
+          <button
+            onClick={async () => {
+              toast.dismiss(t.id);
+              try {
+                await axios.delete(
+                  `${API_URL}/api/doctors/medical-records/${recordId}`,
+                  { withCredentials: true }
+                );
+                
+                toast.success('Medical record deleted successfully!');
+                fetchData();
+              } catch (error) {
+                toast.error(error.response?.data?.message || 'Error deleting medical record');
+              }
+            }}
+            style={{
+              padding: '6px 16px',
+              background: '#ef4444',
+              color: 'white',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontSize: '14px'
+            }}
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    ), { duration: Infinity });
   };
 
   const getRecordTypeBadgeClass = (type) => {
@@ -162,9 +188,6 @@ const MedicalRecords = () => {
           + Add New Record
         </button>
       </div>
-
-      {successMessage && <div className="alert alert-success">{successMessage}</div>}
-      {errorMessage && <div className="alert alert-error">{errorMessage}</div>}
 
       {selectedRecord && (
         <div className="modal-overlay" onClick={() => setSelectedRecord(null)}>

@@ -2,6 +2,7 @@ import '../../styles/AdminDashboard.css';
 import axios from 'axios';
 import API_URL from '../../utils/api';
 import { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 
 const Doctors = ({ searchQuery }) => {
   const [doctors, setDoctors] = useState([]);
@@ -95,15 +96,52 @@ const Doctors = ({ searchQuery }) => {
   };
 
   const handleDeleteDoctor = async (doctorId) => {
-    if (window.confirm('Are you sure you want to delete this doctor?')) {
-      try {
-        await axios.delete(`${API_URL}/api/admin/doctors/${doctorId}`, { withCredentials: true });
-        fetchDoctors();
-        setSelectedDoctor(null);
-      } catch (error) {
-        console.error('Error deleting doctor:', error);
-      }
-    }
+    toast((t) => (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <p style={{ margin: 0, fontWeight: '600' }}>Delete this doctor?</p>
+        <p style={{ margin: 0, fontSize: '14px', color: '#666' }}>This will permanently remove all doctor data.</p>
+        <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            style={{
+              padding: '6px 16px',
+              background: '#f0f0f0',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontSize: '14px'
+            }}
+          >
+            Cancel
+          </button>
+          <button
+            onClick={async () => {
+              toast.dismiss(t.id);
+              try {
+                await axios.delete(`${API_URL}/api/admin/doctors/${doctorId}`, { withCredentials: true });
+                toast.success('Doctor deleted successfully');
+                fetchDoctors();
+                setSelectedDoctor(null);
+              } catch (error) {
+                console.error('Error deleting doctor:', error);
+                toast.error('Failed to delete doctor');
+              }
+            }}
+            style={{
+              padding: '6px 16px',
+              background: '#ef4444',
+              color: 'white',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontSize: '14px'
+            }}
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    ), { duration: Infinity });
   };
 
   if (loading) {

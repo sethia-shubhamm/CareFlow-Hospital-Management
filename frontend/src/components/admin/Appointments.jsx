@@ -2,6 +2,7 @@ import '../../styles/AdminDashboard.css';
 import axios from 'axios';
 import API_URL from '../../utils/api';
 import { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 
 const Appointments = ({ searchQuery }) => {
   const [appointments, setAppointments] = useState([]);
@@ -74,7 +75,7 @@ const Appointments = ({ searchQuery }) => {
         billData, 
         { withCredentials: true }
       );
-      alert('Bill generated successfully');
+      toast.success('Bill generated successfully');
       setShowBillModal(false);
       setBillData({
         amount: '',
@@ -86,7 +87,7 @@ const Appointments = ({ searchQuery }) => {
       fetchAppointments();
     } catch (error) {
       console.error('Error generating bill:', error);
-      alert('Error generating bill: ' + error.response?.data?.message || error.message);
+      toast.error('Error generating bill: ' + (error.response?.data?.message || error.message));
     }
   };
 
@@ -111,18 +112,54 @@ const Appointments = ({ searchQuery }) => {
   };
 
   const handleCancelAppointment = async (appointmentId) => {
-    if (window.confirm('Are you sure you want to cancel this appointment?')) {
-      try {
-        await axios.put(`${API_URL}/api/admin/appointments/${appointmentId}/cancel`, 
-          {}, 
-          { withCredentials: true }
-        );
-        fetchAppointments();
-        setSelectedAppointment(null);
-      } catch (error) {
-        console.error('Error cancelling appointment:', error);
-      }
-    }
+    toast((t) => (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <p style={{ margin: 0, fontWeight: '600' }}>Cancel this appointment?</p>
+        <p style={{ margin: 0, fontSize: '14px', color: '#666' }}>This action cannot be undone.</p>
+        <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            style={{
+              padding: '6px 16px',
+              background: '#f0f0f0',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontSize: '14px'
+            }}
+          >
+            No
+          </button>
+          <button
+            onClick={async () => {
+              toast.dismiss(t.id);
+              try {
+                await axios.put(`${API_URL}/api/admin/appointments/${appointmentId}/cancel`, 
+                  {}, 
+                  { withCredentials: true }
+                );
+                toast.success('Appointment cancelled successfully');
+                fetchAppointments();
+              } catch (error) {
+                console.error('Error cancelling appointment:', error);
+                toast.error('Failed to cancel appointment');
+              }
+            }}
+            style={{
+              padding: '6px 16px',
+              background: '#ef4444',
+              color: 'white',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontSize: '14px'
+            }}
+          >
+            Yes, Cancel
+          </button>
+        </div>
+      </div>
+    ), { duration: Infinity });
   };
 
   if (loading) {

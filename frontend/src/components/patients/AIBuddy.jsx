@@ -3,6 +3,7 @@ import { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import API_URL from '../../utils/api';
 import ReactMarkdown from 'react-markdown';
+import toast from 'react-hot-toast';
 
 const AIBuddy = () => {
   const [messages, setMessages] = useState([]);
@@ -70,22 +71,56 @@ const AIBuddy = () => {
   };
 
   const handleClearHistory = async () => {
-    if (!window.confirm('Are you sure you want to delete all chat history? This cannot be undone.')) {
-      return;
-    }
-
-    try {
-      await axios.delete(`${API_URL}/api/patients/chat-history`, { withCredentials: true });
-      setMessages([{
-        id: Date.now(),
-        type: 'ai',
-        text: 'Chat history cleared. How can I help you today?',
-        timestamp: new Date()
-      }]);
-    } catch (error) {
-      console.error('Error deleting chat history:', error);
-      alert('Failed to delete chat history. Please try again.');
-    }
+    toast((t) => (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <p style={{ margin: 0, fontWeight: '600' }}>Delete all chat history?</p>
+        <p style={{ margin: 0, fontSize: '14px', color: '#666' }}>This action cannot be undone.</p>
+        <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            style={{
+              padding: '6px 16px',
+              background: '#f0f0f0',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontSize: '14px'
+            }}
+          >
+            Cancel
+          </button>
+          <button
+            onClick={async () => {
+              toast.dismiss(t.id);
+              try {
+                await axios.delete(`${API_URL}/api/patients/chat-history`, { withCredentials: true });
+                setMessages([{
+                  id: Date.now(),
+                  type: 'ai',
+                  text: 'Chat history cleared. How can I help you today?',
+                  timestamp: new Date()
+                }]);
+                toast.success('Chat history deleted successfully');
+              } catch (error) {
+                console.error('Error deleting chat history:', error);
+                toast.error('Failed to delete chat history. Please try again.');
+              }
+            }}
+            style={{
+              padding: '6px 16px',
+              background: '#ef4444',
+              color: 'white',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontSize: '14px'
+            }}
+          >
+            Delete
+          </button>
+        </div>
+      </div>
+    ), { duration: Infinity });
   };
 
   const handleFileSelect = (e) => {
@@ -193,14 +228,14 @@ const AIBuddy = () => {
   };
 
   return (
-    <div className="ai-buddy-container" style={{
+    <div className="aibuddy-chat-container" style={{
       display: 'flex',
       flexDirection: 'column',
-      height: 'calc(100vh - 150px)',
+      height: 'calc(100vh - 200px)',
       backgroundColor: '#fff',
       borderRadius: '12px',
       boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-      marginRight: '60px',
+      marginRight: '20px',
       overflow: 'hidden'
     }}>
       {/* Header */}
@@ -256,7 +291,7 @@ const AIBuddy = () => {
       </div>
 
       {/* Messages Area */}
-      <div className="messages-container" style={{
+      <div className="aibuddy-messages-wrapper" style={{
         flex: 1,
         overflowY: 'auto',
         padding: '20px',
@@ -282,7 +317,7 @@ const AIBuddy = () => {
               style={{
                 display: 'flex',
                 justifyContent: message.type === 'user' ? 'flex-end' : 'flex-start',
-                animation: 'slideIn 0.3s ease'
+                animation: 'aibuddySlideIn 0.3s ease'
               }}
             >
               <div style={{
@@ -362,26 +397,26 @@ const AIBuddy = () => {
               display: 'flex',
               gap: '4px'
             }}>
-              <div className="typing-dot" style={{ 
+              <div className="aibuddy-typing-indicator" style={{ 
                 width: '8px', 
                 height: '8px', 
                 backgroundColor: '#888', 
                 borderRadius: '50%',
-                animation: 'typing 1.4s infinite'
+                animation: 'aibuddyTyping 1.4s infinite'
               }}></div>
-              <div className="typing-dot" style={{ 
+              <div className="aibuddy-typing-indicator" style={{ 
                 width: '8px', 
                 height: '8px', 
                 backgroundColor: '#888', 
                 borderRadius: '50%',
-                animation: 'typing 1.4s infinite 0.2s'
+                animation: 'aibuddyTyping 1.4s infinite 0.2s'
               }}></div>
-              <div className="typing-dot" style={{ 
+              <div className="aibuddy-typing-indicator" style={{ 
                 width: '8px', 
                 height: '8px', 
                 backgroundColor: '#888', 
                 borderRadius: '50%',
-                animation: 'typing 1.4s infinite 0.4s'
+                animation: 'aibuddyTyping 1.4s infinite 0.4s'
               }}></div>
             </div>
           </div>
@@ -392,7 +427,7 @@ const AIBuddy = () => {
 
       {/* Selected Files Preview */}
       {selectedFiles.length > 0 && (
-        <div style={{
+        <div className="aibuddy-files-preview" style={{
           padding: '12px 20px',
           borderTop: '1px solid #e9ecef',
           backgroundColor: '#f8f9fa',
@@ -401,7 +436,7 @@ const AIBuddy = () => {
           gap: '8px'
         }}>
           {selectedFiles.map((file, index) => (
-            <div key={index} style={{
+            <div key={index} className="aibuddy-file-item" style={{
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
@@ -433,7 +468,7 @@ const AIBuddy = () => {
       )}
 
       {/* Input Area */}
-      <div style={{
+      <div className="aibuddy-input-area" style={{
         padding: '20px',
         borderTop: '2px solid #f0f0f0',
         backgroundColor: '#fff',
@@ -452,6 +487,7 @@ const AIBuddy = () => {
         
         <button
           onClick={() => fileInputRef.current.click()}
+          className="aibuddy-attach-btn"
           style={{
             padding: '12px',
             border: '2px solid #007bff',
@@ -485,6 +521,7 @@ const AIBuddy = () => {
           onChange={(e) => setInputMessage(e.target.value)}
           onKeyPress={handleKeyPress}
           placeholder="Type your message here..."
+          className="aibuddy-textarea-input"
           style={{
             flex: 1,
             padding: '12px 16px',
@@ -506,6 +543,7 @@ const AIBuddy = () => {
         <button
           onClick={handleSendMessage}
           disabled={!inputMessage.trim() && selectedFiles.length === 0}
+          className="aibuddy-send-btn"
           style={{
             padding: '12px 24px',
             border: 'none',
@@ -534,30 +572,30 @@ const AIBuddy = () => {
       </div>
 
       <style>{`
-        .messages-container::-webkit-scrollbar {
+        .aibuddy-messages-wrapper::-webkit-scrollbar {
           width: 8px;
         }
         
-        .messages-container::-webkit-scrollbar-track {
+        .aibuddy-messages-wrapper::-webkit-scrollbar-track {
           background: rgba(241, 241, 241, 0.6);
           border-radius: 10px;
         }
         
-        .messages-container::-webkit-scrollbar-thumb {
+        .aibuddy-messages-wrapper::-webkit-scrollbar-thumb {
           background: rgba(136, 136, 136, 0.6);
           border-radius: 10px;
         }
         
-        .messages-container::-webkit-scrollbar-thumb:hover {
+        .aibuddy-messages-wrapper::-webkit-scrollbar-thumb:hover {
           background: rgba(85, 85, 85, 0.8);
         }
         
-        @keyframes typing {
+        @keyframes aibuddyTyping {
           0%, 60%, 100% { transform: translateY(0); }
           30% { transform: translateY(-10px); }
         }
         
-        @keyframes slideIn {
+        @keyframes aibuddySlideIn {
           from {
             opacity: 0;
             transform: translateY(10px);
@@ -565,6 +603,19 @@ const AIBuddy = () => {
           to {
             opacity: 1;
             transform: translateY(0);
+          }
+        }
+
+        @media (max-width: 768px) {
+          .aibuddy-chat-container {
+            margin-right: 0 !important;
+            height: calc(100vh - 250px) !important;
+          }
+        }
+
+        @media (max-width: 576px) {
+          .aibuddy-chat-container {
+            height: calc(100vh - 280px) !important;
           }
         }
       `}</style>

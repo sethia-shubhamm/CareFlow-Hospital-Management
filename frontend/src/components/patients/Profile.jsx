@@ -2,14 +2,13 @@ import '../../styles/PatientDashboard.css';
 import axios from 'axios';
 import API_URL from '../../utils/api';
 import { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 
 const Profile = () => {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isEditing, setIsEditing] = useState(false);
   const [editMode, setEditMode] = useState('info'); // 'info', 'password', 'emergency'
-  const [successMessage, setSuccessMessage] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
 
   // Form states
   const [formData, setFormData] = useState({
@@ -73,15 +72,11 @@ const Profile = () => {
   const handleEditClick = (mode) => {
     setIsEditing(true);
     setEditMode(mode);
-    setSuccessMessage('');
-    setErrorMessage('');
   };
 
   const handleCancel = () => {
     setIsEditing(false);
     setEditMode('info');
-    setErrorMessage('');
-    setSuccessMessage('');
   };
 
   const handleFormChange = (e) => {
@@ -111,8 +106,6 @@ const Profile = () => {
   const submitProfileUpdate = async (e) => {
     e.preventDefault();
     setSubmitting(true);
-    setErrorMessage('');
-    setSuccessMessage('');
 
     try {
       const response = await axios.put(
@@ -130,13 +123,12 @@ const Profile = () => {
       );
 
       setProfile(response.data.patient);
-      setSuccessMessage('Profile updated successfully!');
+      toast.success('Profile updated successfully!');
       setTimeout(() => {
         setIsEditing(false);
-        setSuccessMessage('');
-      }, 2000);
+      }, 1500);
     } catch (error) {
-      setErrorMessage(error.response?.data?.message || 'Error updating profile');
+      toast.error(error.response?.data?.message || 'Error updating profile');
     } finally {
       setSubmitting(false);
     }
@@ -145,17 +137,15 @@ const Profile = () => {
   const submitPasswordUpdate = async (e) => {
     e.preventDefault();
     setSubmitting(true);
-    setErrorMessage('');
-    setSuccessMessage('');
 
     if (passwordData.newPassword !== passwordData.confirmPassword) {
-      setErrorMessage('Passwords do not match');
+      toast.error('Passwords do not match');
       setSubmitting(false);
       return;
     }
 
     if (passwordData.newPassword.length < 6) {
-      setErrorMessage('Password must be at least 6 characters long');
+      toast.error('Password must be at least 6 characters long');
       setSubmitting(false);
       return;
     }
@@ -170,14 +160,13 @@ const Profile = () => {
         { withCredentials: true }
       );
 
-      setSuccessMessage('Password updated successfully!');
+      toast.success('Password updated successfully!');
       setPasswordData({ currentPassword: '', newPassword: '', confirmPassword: '' });
       setTimeout(() => {
         setIsEditing(false);
-        setSuccessMessage('');
-      }, 2000);
+      }, 1500);
     } catch (error) {
-      setErrorMessage(error.response?.data?.message || 'Error updating password');
+      toast.error(error.response?.data?.message || 'Error updating password');
     } finally {
       setSubmitting(false);
     }
@@ -186,8 +175,6 @@ const Profile = () => {
   const submitEmergencyContact = async (e) => {
     e.preventDefault();
     setSubmitting(true);
-    setErrorMessage('');
-    setSuccessMessage('');
 
     try {
       const response = await axios.put(
@@ -200,13 +187,12 @@ const Profile = () => {
       );
 
       setProfile(response.data.patient);
-      setSuccessMessage('Emergency contact updated successfully!');
+      toast.success('Emergency contact updated successfully!');
       setTimeout(() => {
         setIsEditing(false);
-        setSuccessMessage('');
-      }, 2000);
+      }, 1500);
     } catch (error) {
-      setErrorMessage(error.response?.data?.message || 'Error updating emergency contact');
+      toast.error(error.response?.data?.message || 'Error updating emergency contact');
     } finally {
       setSubmitting(false);
     }
@@ -312,9 +298,6 @@ const Profile = () => {
             </h2>
             <button className="modal-close" onClick={handleCancel}>×</button>
           </div>
-
-          {successMessage && <div className="alert alert-success">{successMessage}</div>}
-          {errorMessage && <div className="alert alert-error">{errorMessage}</div>}
 
           {editMode === 'info' && (
             <form onSubmit={submitProfileUpdate} className="profile-edit-form">

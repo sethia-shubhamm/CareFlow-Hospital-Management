@@ -2,6 +2,7 @@ import '../../styles/PatientDashboard.css';
 import axios from 'axios';
 import API_URL from '../../utils/api';
 import { useState, useEffect } from 'react';
+import toast from 'react-hot-toast';
 
 const Appointments = () => {
   const [appointments, setAppointments] = useState([]);
@@ -12,8 +13,6 @@ const Appointments = () => {
     date: '',
     time: ''
   });
-  const [successMessage, setSuccessMessage] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     fetchAppointments();
@@ -32,21 +31,54 @@ const Appointments = () => {
   };
 
   const handleCancelAppointment = async (appointmentId) => {
-    if (!confirm('Are you sure you want to cancel this appointment?')) return;
-
-    try {
-      await axios.put(
-        `${API_URL}/api/doctors/appointments/${appointmentId}/cancel`,
-        {},
-        { withCredentials: true }
-      );
-      setSuccessMessage('Appointment cancelled successfully');
-      fetchAppointments();
-      setTimeout(() => setSuccessMessage(''), 3000);
-    } catch (error) {
-      setErrorMessage(error.response?.data?.message || 'Error cancelling appointment');
-      setTimeout(() => setErrorMessage(''), 3000);
-    }
+    toast((t) => (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+        <p style={{ margin: 0, fontWeight: '600' }}>Cancel this appointment?</p>
+        <p style={{ margin: 0, fontSize: '14px', color: '#666' }}>This action cannot be undone.</p>
+        <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+          <button
+            onClick={() => toast.dismiss(t.id)}
+            style={{
+              padding: '6px 16px',
+              background: '#f0f0f0',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontSize: '14px'
+            }}
+          >
+            No
+          </button>
+          <button
+            onClick={async () => {
+              toast.dismiss(t.id);
+              try {
+                await axios.put(
+                  `${API_URL}/api/doctors/appointments/${appointmentId}/cancel`,
+                  {},
+                  { withCredentials: true }
+                );
+                toast.success('Appointment cancelled successfully');
+                fetchAppointments();
+              } catch (error) {
+                toast.error(error.response?.data?.message || 'Error cancelling appointment');
+              }
+            }}
+            style={{
+              padding: '6px 16px',
+              background: '#ef4444',
+              color: 'white',
+              border: 'none',
+              borderRadius: '6px',
+              cursor: 'pointer',
+              fontSize: '14px'
+            }}
+          >
+            Yes, Cancel
+          </button>
+        </div>
+      </div>
+    ), { duration: Infinity });
   };
 
   const openRescheduleModal = (appointment) => {
@@ -66,13 +98,11 @@ const Appointments = () => {
         rescheduleData,
         { withCredentials: true }
       );
-      setSuccessMessage('Appointment rescheduled successfully');
+      toast.success('Appointment rescheduled successfully');
       setShowRescheduleModal(false);
       fetchAppointments();
-      setTimeout(() => setSuccessMessage(''), 3000);
     } catch (error) {
-      setErrorMessage(error.response?.data?.message || 'Error rescheduling appointment');
-      setTimeout(() => setErrorMessage(''), 3000);
+      toast.error(error.response?.data?.message || 'Error rescheduling appointment');
     }
   };
 
@@ -89,9 +119,6 @@ const Appointments = () => {
       <div className="section-header">
         <h2>All Appointments</h2>
       </div>
-
-      {successMessage && <div className="alert alert-success">{successMessage}</div>}
-      {errorMessage && <div className="alert alert-error">{errorMessage}</div>}
 
       <div className="appointments-list">
         {appointments.length > 0 ? (
