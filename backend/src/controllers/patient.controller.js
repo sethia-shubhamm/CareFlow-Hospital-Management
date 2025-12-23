@@ -119,6 +119,7 @@ export const getMedicalRecords = asyncHandler(async (req, res) => {
         records: medicalRecords.map(record => ({
             doctorName: record.doctor.user.name,
             specialization: record.doctor.specialization,
+            doctorImage: record.doctor.image,
             visitDate: record.visitDate,
             title: record.title,
             description: record.description,

@@ -44,7 +44,7 @@ const Records = () => {
           records.map((record, index) => (
             <div key={index} className="record-card">
               <div className="record-icon">
-                <img src="/images/document-icon.png" alt="Record" />
+                <img src={record.doctorImage || "/images/patientPage/doctor.png"} alt="Record" />
               </div>
               <div className="record-info">
                 <h3>{record.title}</h3>
