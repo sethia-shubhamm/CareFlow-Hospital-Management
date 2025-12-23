@@ -2,15 +2,20 @@ import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
 
-// Create uploads directory if it doesn't exist
-const uploadDir = './uploads';
-if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
-}
+// Use /tmp for Vercel serverless compatibility, or ./uploads for local development
+const uploadDir = process.env.VERCEL ? '/tmp' : './uploads';
 
 // Configure storage
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
+        // Create directory only when needed (lazy creation)
+        if (!fs.existsSync(uploadDir)) {
+            try {
+                fs.mkdirSync(uploadDir, { recursive: true });
+            } catch (error) {
+                console.error('Failed to create upload directory:', error);
+            }
+        }
         cb(null, uploadDir);
     },
     filename: function (req, file, cb) {
